@@ -2,7 +2,7 @@ model RentalRequest {
   id            String              @id @default(uuid())
   propertyId    String
   tenantId      String
-  landLordId    String
+  landlordId    String
   moveInDate    DateTime
   leaseDuration Int
   message       String?
@@ -14,8 +14,8 @@ model RentalRequest {
   //   One tenant can do many rental requests
   tenant User @relation("TenantRentalRequests", fields: [tenantId], references: [id])
 
-  //   One landLord can have many rental requests
-  landLord User @relation("LandLordRentalRequests", fields: [landLordId], references: [id])
+  //   One landlord can have many rental requests
+  landlord User @relation("LandlordRentalRequests", fields: [landlordId], references: [id])
 
   //   One property can have many rental requests
   property Property @relation(fields: [propertyId], references: [id])

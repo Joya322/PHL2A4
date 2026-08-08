@@ -13,7 +13,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // One landLord -> Many properties
+  // One landlord -> Many properties
   properties Property[]
 
   //   One Tenant -> Many reviews
@@ -22,8 +22,8 @@ model User {
   //   One tenant -> Many rental requests
   rentalRequestsAsTenant RentalRequest[] @relation("TenantRentalRequests")
 
-  //   One landLord -> Many rental requests
-  rentalRequestsAsLandLord RentalRequest[] @relation("LandLordRentalRequests")
+  //   One landlord -> Many rental requests
+  rentalRequestsAsLandlord RentalRequest[] @relation("LandlordRentalRequests")
 
   @@map("users")
 }
