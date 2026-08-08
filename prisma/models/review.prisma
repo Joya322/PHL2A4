@@ -1,0 +1,18 @@
+model Review {
+  id         String  @id @default(uuid())
+  propertyId String
+  tenantId   String
+  rating     Int
+  comment    String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Many reviews belong to one property
+  property Property @relation(fields: [propertyId], references: [id])
+
+  // Many reviews belong to one tenant
+  tenant User @relation(fields: [tenantId], references: [id])
+
+  @@map("reviews")
+}

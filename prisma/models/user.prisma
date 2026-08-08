@@ -1,0 +1,29 @@
+model User {
+  id           String     @id @default(uuid())
+  fullName     String
+  email        String     @unique
+  password     String
+  phone        String     @unique
+  profileImage String?
+  role         UserRole
+  address      String?
+  isVerified   Boolean    @default(false)
+  status       UserStatus @default(ACTIVE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // One landLord -> Many properties
+  properties Property[]
+
+  //   One Tenant -> Many reviews
+  reviews Review[]
+
+  //   One tenant -> Many rental requests
+  rentalRequestsAsTenant RentalRequest[] @relation("TenantRentalRequests")
+
+  //   One landLord -> Many rental requests
+  rentalRequestsAsLandLord RentalRequest[] @relation("LandLordRentalRequests")
+
+  @@map("users")
+}

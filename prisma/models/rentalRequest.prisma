@@ -1,0 +1,27 @@
+model RentalRequest {
+  id            String              @id @default(uuid())
+  propertyId    String
+  tenantId      String
+  landLordId    String
+  moveInDate    DateTime
+  leaseDuration Int
+  message       String?
+  status        RentalRequestStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  //   One tenant can do many rental requests
+  tenant User @relation("TenantRentalRequests", fields: [tenantId], references: [id])
+
+  //   One landLord can have many rental requests
+  landLord User @relation("LandLordRentalRequests", fields: [landLordId], references: [id])
+
+  //   One property can have many rental requests
+  property Property @relation(fields: [propertyId], references: [id])
+
+  //  One rental request can have one payment
+  payment Payment?
+
+  @@map("rentalRequests")
+}

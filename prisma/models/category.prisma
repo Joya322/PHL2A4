@@ -1,6 +1,12 @@
-model Category{
-    id String @id @default(uuid())
-    name String @unique
-    description String?
-    createdAt DateTime @default(now())
+model Category {
+  id          String  @id @default(uuid())
+  name        String  @unique
+  description String?
+
+  createdAt DateTime @default(now())
+
+  // One category -> Many properties
+  properties Property[]
+
+  @@map("categories")
 }

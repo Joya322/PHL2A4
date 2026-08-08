@@ -1,0 +1,19 @@
+model Payment {
+  id              String         @id @default(uuid())
+  transactionId   String         @unique
+  rentalRequestId String         @unique
+  amount          Float
+  paymentMethod   PaymentMethods @default(MOBILE_BANKING)
+  provider        Provider
+  status          PaymentStatus  @default(PENDING)
+  currency        String         @default("BDT")
+  paidAt          DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // One payment belongs to one rental request
+  rentalRequest RentalRequest @relation(fields: [rentalRequestId], references: [id])
+
+  @@map("payments")
+}

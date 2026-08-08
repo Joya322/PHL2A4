@@ -1,0 +1,35 @@
+model Property {
+  id            String   @id @default(uuid())
+  landLordId    String
+  categoryId    String
+  title         String
+  description   String
+  address       String
+  city          String
+  area          String?
+  rentAmount    Float
+  bedrooms      Int
+  bathrooms     Int
+  size          Float?
+  furnished     Boolean  @default(false)
+  availableFrom DateTime
+  isAvailable   Boolean  @default(true)
+  imageUrl      String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Many properties belong to one landLord
+  landLord User @relation(fields: [landLordId], references: [id])
+
+  // Many properties belong to one category
+  category Category @relation(fields: [categoryId], references: [id])
+
+  // One property -> many reviews
+  reviews Review[]
+
+  // One property -> many rental requests
+  rentalRequests RentalRequest[]
+
+  @@map("properties")
+}
