@@ -1,6 +1,6 @@
 import { UserRole } from "../../../generated/prisma/enums";
 
-export interface IPayload {
+export interface ICreateUser {
   fullName: string;
   email: string;
   password: string;

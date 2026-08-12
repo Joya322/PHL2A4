@@ -1,21 +1,21 @@
 import bcrypt from "bcryptjs";
 import { prisma } from "../../lib/prisma";
-import { IPayload } from "./auth.interface";
+import { ICreateUser } from "./auth.interface";
 import config from "../../config";
 
-const registerIntoDB = async (payload: IPayload) => {
+const userRegistrationIntoDB = async (payload: ICreateUser) => {
   const { fullName, email, password, phone, role, profileImage, address } =
     payload;
 
   // find existing user
-  const existingUser = await prisma.user.findFirst({
+  const isUserExist = await prisma.user.findFirst({
     where: {
       OR: [{ email: payload.email }, { phone: payload.phone }],
     },
   });
 
   // check if the user already exist or not
-  if (existingUser) {
+  if (isUserExist) {
     throw new Error("The user already exist.");
   }
 
@@ -24,13 +24,26 @@ const registerIntoDB = async (payload: IPayload) => {
     Number(config.bcrypt_salt_rounds),
   );
 
-  console.log(hashedPassword);
+  // create user into db
+  const newUser = await prisma.user.create({
+    data: {
+      fullName,
+      email,
+      password: hashedPassword,
+      phone,
+      profileImage,
+      role,
+      address,
+    },
+  });
+
+  return newUser;
 };
 const loginIntoDB = () => {};
 const meFromDB = () => {};
 
 export const authService = {
-  registerIntoDB,
+  userRegistrationIntoDB,
   loginIntoDB,
   meFromDB,
 };
