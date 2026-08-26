@@ -18,9 +18,42 @@ const userRegistration = catchAsync(
 );
 
 const login = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const payload = req.body;
+
+    const { accessToken, refreshToken } =
+      await authServices.loginIntoDB(payload);
+    
+    
+
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "none",
+      maxAge: 1000 * 60 * 60 * 24,
+    });
+
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "none",
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+    });
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "User Logged in Successfully.",
+      data: {
+        accessToken,
+        refreshToken,
+      },
+    });
+  },
+);
+const me = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {},
 );
-const me = async (req: Request, res: Response) => {};
 
 export const authControllers = {
   userRegistration,

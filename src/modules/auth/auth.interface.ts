@@ -9,3 +9,7 @@ export interface ICreateUser {
   role: UserRole;
   address?: string;
 }
+export interface ILoginUser {
+  email: string;
+  password: string;
+}
