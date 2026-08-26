@@ -61,7 +61,7 @@ const getMyProfile = catchAsync(
       statusCode: httpStatus.OK,
       message: "Profile retrieved successfully.",
       data: {
-        result
+        result,
       },
     });
   },

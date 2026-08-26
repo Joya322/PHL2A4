@@ -1,11 +1,11 @@
 import bcrypt from "bcryptjs";
 import { prisma } from "../../lib/prisma";
-import { ICreateUser, ILoginUser } from "./auth.interface";
+import { ICreateUserPayload, ILoginUserPayload } from "./auth.interface";
 import config from "../../config";
 import { jwtUtils } from "../../utils/jwt";
 import { SignOptions } from "jsonwebtoken";
 
-const userRegistrationIntoDB = async (payload: ICreateUser) => {
+const userRegistrationIntoDB = async (payload: ICreateUserPayload) => {
   const { fullName, email, password, phone, role, profileImage, address } =
     payload;
 
@@ -44,7 +44,7 @@ const userRegistrationIntoDB = async (payload: ICreateUser) => {
   return userWithoutPassword;
 };
 
-const loginIntoDB = async (payload: ILoginUser) => {
+const loginIntoDB = async (payload: ILoginUserPayload) => {
   const { email, password } = payload;
 
   const user = await prisma.user.findUniqueOrThrow({
@@ -91,14 +91,14 @@ const loginIntoDB = async (payload: ILoginUser) => {
 const getMyProfileFromDB = async (userId: string) => {
   const user = await prisma.user.findUniqueOrThrow({
     where: {
-      id: userId
+      id: userId,
     },
     omit: {
-      password: true
-    }
-  })
+      password: true,
+    },
+  });
 
-  return user
+  return user;
 };
 
 export const authServices = {

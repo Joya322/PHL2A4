@@ -1,11 +1,70 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
+import { catchAsync } from "../../utils/catchAsync";
+import { sendResponse } from "../../utils/sendResponse";
+import httpStatus from 'http-status';
+import { propertyServices } from "./property.service";
 
-const getProperties = async (req: Request, res: Response) => {};
-const getProperty = async (req: Request, res: Response) => {};
-const getAllPropertyCategories = async (req: Request, res: Response) => {};
+const addProperty = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const payload = req.body;
 
-export const propertyController = {
+    const result = await propertyServices.addPropertyIntoDB(payload);
+    
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Property added successfully.",
+      data: {
+        //result
+      },
+    });
+  },
+);
+
+
+const getProperties = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "User Logged in Successfully.",
+      data: {
+        //accessToken,
+        //refreshToken,
+      },
+    });
+  },
+);
+const getPropertyById = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "User Logged in Successfully.",
+      data: {
+        //accessToken,
+        //refreshToken,
+      },
+    });
+  },
+);
+const getAllPropertyCategories = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "User Logged in Successfully.",
+      data: {
+        //accessToken,
+        //refreshToken,
+      },
+    });
+  },
+);
+
+export const propertyControllers = {
+  addProperty,
   getProperties,
-  getProperty,
+  getPropertyById,
   getAllPropertyCategories,
 };

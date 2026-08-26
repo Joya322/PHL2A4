@@ -8,9 +8,10 @@ import { reviewRoute } from "./modules/review/review.route";
 import { paymentRoute } from "./modules/payment/payment.route";
 import { rentalRoute } from "./modules/rentalRequest/rentalRequest.route";
 import { landlordRoute } from "./modules/landlord/landlord.route";
-import { propertyRoute } from "./modules/property/property.route";
+import { propertyRoutes } from "./modules/property/property.route";
 import { notFound } from "./middlewares/notFound";
 import { globalErrorHandler } from "./middlewares/globalErrorHandler";
+import { categoryRoutes } from "./modules/category/category.route";
 
 const app: Application = express();
 
@@ -36,8 +37,9 @@ app.get("/", async (req: Request, res: Response) => {
 
 app.use("/api/auth", authRoutes);
 
+app.use("/api/categories", categoryRoutes);
 // ...
-app.use("/api/properties", propertyRoute);
+app.use("/api/properties", propertyRoutes);
 app.use("/api/landlord", landlordRoute);
 app.use("/api/rentals", rentalRoute);
 app.use("/api/payments", paymentRoute);
