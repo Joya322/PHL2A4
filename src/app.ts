@@ -10,6 +10,7 @@ import { rentalRoute } from "./modules/rentalRequest/rentalRequest.route";
 import { landlordRoute } from "./modules/landlord/landlord.route";
 import { propertyRoute } from "./modules/property/property.route";
 import { notFound } from "./middlewares/notFound";
+import { globalErrorHandler } from "./middlewares/globalErrorHandler";
 
 const app: Application = express();
 
@@ -43,6 +44,6 @@ app.use("/api/admin", adminRoute);
 
 app.use(notFound);
 
-
+app.use(globalErrorHandler);
 
 export default app;

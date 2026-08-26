@@ -37,10 +37,11 @@ const userRegistrationIntoDB = async (payload: ICreateUser) => {
     },
   });
 
-  const { password: _, ...userWithoutRole } = newUser;
+  const { password: _, ...userWithoutPassword } = newUser;
 
-  return userWithoutRole;
+  return userWithoutPassword;
 };
+
 const loginIntoDB = () => {};
 const meFromDB = () => {};
 
