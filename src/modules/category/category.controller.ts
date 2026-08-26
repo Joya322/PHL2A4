@@ -30,39 +30,74 @@ const getAllPropertyCategories = catchAsync(
       statusCode: httpStatus.OK,
       message: "All categories retrieved successfully.",
       data: {
-        result
+        result,
       },
     });
   },
 );
-// const getPropertyById = catchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     sendResponse(res, {
-//       success: true,
-//       statusCode: httpStatus.OK,
-//       message: "User Logged in Successfully.",
-//       data: {
-//         //accessToken,
-//         //refreshToken,
-//       },
-//     });
-//   },
-// );
-// const getAllPropertyCategories = catchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     sendResponse(res, {
-//       success: true,
-//       statusCode: httpStatus.OK,
-//       message: "User Logged in Successfully.",
-//       data: {
-//         //accessToken,
-//         //refreshToken,
-//       },
-//     });
-//   },
-// );
+
+const getPropertyCategoryById = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const categoryId = req.params?.categoryId;
+
+    const result = await categoryServices.getPropertyCategoryByIdFromDB(
+      categoryId as string,
+    );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Category retrieved successfully.",
+      data: {
+        result,
+      },
+    });
+  },
+);
+
+const updatePropertyCategory = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const categoryId = req.params?.categoryId;
+
+    const payload = req.body;
+
+    const result = await categoryServices.updatePropertyCategoryIntoDB(
+      categoryId as string,
+      payload,
+    );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Category updated successfully.",
+      data: {
+        result,
+      },
+    });
+  },
+);
+
+const deletePropertyCategory = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const categoryId = req.params?.categoryId;
+
+     await categoryServices.deletePropertyCategoryFromDB(
+      categoryId as string,
+    );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Category deleted successfully.",
+      data: null
+    });
+  },
+);
 
 export const categoryControllers = {
   addPropertyCategory,
   getAllPropertyCategories,
+  getPropertyCategoryById,
+  updatePropertyCategory,
+  deletePropertyCategory,
 };
