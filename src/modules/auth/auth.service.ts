@@ -25,7 +25,7 @@ const userRegistrationIntoDB = async (payload: ICreateUser) => {
   );
 
   // create user into db
-  const newUser = await prisma.user.create({
+  const createNewUser = await prisma.user.create({
     data: {
       fullName,
       email,
@@ -37,7 +37,7 @@ const userRegistrationIntoDB = async (payload: ICreateUser) => {
     },
   });
 
-  const { password: _, ...userWithoutPassword } = newUser;
+  const { password: _, ...userWithoutPassword } = createNewUser;
 
   return userWithoutPassword;
 };
@@ -45,7 +45,7 @@ const userRegistrationIntoDB = async (payload: ICreateUser) => {
 const loginIntoDB = () => {};
 const meFromDB = () => {};
 
-export const authService = {
+export const authServices = {
   userRegistrationIntoDB,
   loginIntoDB,
   meFromDB,

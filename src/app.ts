@@ -2,7 +2,7 @@ import cookieParser from "cookie-parser";
 import express, { Application, Request, Response } from "express";
 import cors from "cors";
 import config from "./config";
-import { authRoute } from "./modules/auth/auth.route";
+import { authRoutes } from "./modules/auth/auth.route";
 import { adminRoute } from "./modules/admin/admin.route";
 import { reviewRoute } from "./modules/review/review.route";
 import { paymentRoute } from "./modules/payment/payment.route";
@@ -34,7 +34,9 @@ app.get("/", async (req: Request, res: Response) => {
   res.send("Hello World!");
 });
 
-app.use("/api/auth", authRoute);
+app.use("/api/auth", authRoutes);
+
+// ...
 app.use("/api/properties", propertyRoute);
 app.use("/api/landlord", landlordRoute);
 app.use("/api/rentals", rentalRoute);
