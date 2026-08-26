@@ -23,8 +23,6 @@ const login = catchAsync(
 
     const { accessToken, refreshToken } =
       await authServices.loginIntoDB(payload);
-    
-    
 
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
@@ -51,12 +49,26 @@ const login = catchAsync(
     });
   },
 );
-const me = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {},
+
+const getMyProfile = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.user?.id;
+
+    const result = await authServices.getMyProfileFromDB(userId as string);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Profile retrieved successfully.",
+      data: {
+        result
+      },
+    });
+  },
 );
 
 export const authControllers = {
   userRegistration,
   login,
-  me,
+  getMyProfile,
 };
