@@ -1,26 +1,30 @@
 import { NextFunction, Request, Response } from "express";
 import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
-import httpStatus from 'http-status';
+import httpStatus from "http-status";
 import { propertyServices } from "./property.service";
 
 const addProperty = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
+    const landlordId = req.user?.id;
+
     const payload = req.body;
 
-    const result = await propertyServices.addPropertyIntoDB(payload);
-    
+    const result = await propertyServices.addPropertyIntoDB(
+      payload,
+      landlordId as string,
+    );
+
     sendResponse(res, {
       success: true,
-      statusCode: httpStatus.OK,
+      statusCode: httpStatus.CREATED,
       message: "Property added successfully.",
       data: {
-        //result
+        result,
       },
     });
   },
 );
-
 
 const getProperties = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
