@@ -46,6 +46,23 @@ const getAllPropertiesFromDB = async (query: IPropertyQuery) => {
     orderBy: {
       [sortBy]: sortOrder,
     },
+    // include: {
+    //   landlord: {
+    //     omit: {
+    //       password: true,
+    //     },
+    //   },
+    // },
+  });
+
+  return allProperties;
+};
+
+const getPropertyByIdFromDB = async (id: string) => {
+  const property = await prisma.property.findUnique({
+    where: {
+      id,
+    },
     include: {
       landlord: {
         omit: {
@@ -55,15 +72,17 @@ const getAllPropertiesFromDB = async (query: IPropertyQuery) => {
     },
   });
 
-  return allProperties;
+  if (!property) {
+    throw new Error("Sorry! No such property found. Please try again.");
+  }
+
+  return property;
 };
 
-const getPropertyFromDB = () => {};
 const getAllPropertyCategoriesFromDB = () => {};
 
 export const propertyServices = {
   addPropertyIntoDB,
   getAllPropertiesFromDB,
-  getPropertyFromDB,
-  getAllPropertyCategoriesFromDB,
+  getPropertyByIdFromDB,
 };

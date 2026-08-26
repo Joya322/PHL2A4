@@ -7,11 +7,15 @@ const router = Router();
 
 router.post("/", auth(UserRole.LANDLORD), propertyControllers.addProperty);
 
+router.get("/", auth(UserRole.ADMIN, UserRole.LANDLORD, UserRole.TENANT), propertyControllers.getAllProperties);
+
+router.get(
+  "/:id",
+  auth(UserRole.ADMIN, UserRole.LANDLORD, UserRole.TENANT),
+  propertyControllers.getPropertyById,
+);
 // ...
-router.get("/", propertyControllers.getAllProperties);
-router.get("/:id", propertyControllers.getPropertyById);
 
 router.post("/categories", propertyControllers.getAllPropertyCategories);
-router.get("/categories", propertyControllers.getAllPropertyCategories);
 
 export const propertyRoutes = router;
