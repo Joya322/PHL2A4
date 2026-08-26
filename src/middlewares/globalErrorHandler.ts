@@ -9,10 +9,10 @@ export const globalErrorHandler = (
   next: NextFunction,
 ) => {
   let statusCode;
-  let errorMessage = err.message || "Internal Server Error";
-  let errorName = err.name || "Internal Server Error";
+  let errorMessage = err.message ? err.message : "Internal Server Error";
+  let errorName = err.name ? err.name : "Internal Server Error";
 
-  if (err instanceof Prisma.PrismaClientInitializationError) {
+  if (err instanceof Prisma.PrismaClientValidationError) {
     statusCode = httpStatus.BAD_REQUEST;
     errorMessage = "You have provided incorrect field type or missing fields";
   } else if (err instanceof Prisma.PrismaClientKnownRequestError) {
@@ -39,6 +39,9 @@ export const globalErrorHandler = (
   } else if (err instanceof Prisma.PrismaClientUnknownRequestError) {
     statusCode = httpStatus.INTERNAL_SERVER_ERROR;
     errorMessage = "Error occurred during query execution";
+  } else {
+    statusCode = httpStatus.INTERNAL_SERVER_ERROR;
+    errorMessage = "Internal Server Error";
   }
 
   res.status(statusCode as number).json({

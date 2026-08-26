@@ -20,10 +20,10 @@ model Property {
   updatedAt DateTime @updatedAt
 
   // Many properties belong to one landlord
-  landlord User @relation(fields: [landlordId], references: [id])
+  landlord User @relation(fields: [landlordId], references: [id], onDelete: Cascade)
 
   // Many properties belong to one category
-  category Category @relation(fields: [categoryId], references: [id])
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
   // One property -> many reviews
   reviews Review[]

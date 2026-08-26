@@ -26,19 +26,23 @@ const addProperty = catchAsync(
   },
 );
 
-const getProperties = catchAsync(
+const getAllProperties = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
+    const query = req.query;
+    
+    const result = await propertyServices.getAllPropertiesFromDB(query);
+
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,
-      message: "User Logged in Successfully.",
+      message: "All properties retrieved successfully.",
       data: {
-        //accessToken,
-        //refreshToken,
+        result
       },
     });
   },
 );
+
 const getPropertyById = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     sendResponse(res, {
@@ -68,7 +72,7 @@ const getAllPropertyCategories = catchAsync(
 
 export const propertyControllers = {
   addProperty,
-  getProperties,
+  getAllProperties,
   getPropertyById,
   getAllPropertyCategories,
 };
