@@ -1,5 +1,8 @@
 import { prisma } from "../../lib/prisma";
-import { ICreatePropertyPayload } from "./landlord.interface";
+import {
+  ICreatePropertyPayload,
+  IUpdatePropertyPayload,
+} from "./landlord.interface";
 
 const createPropertyIntoDB = async (
   payload: ICreatePropertyPayload,
@@ -37,7 +40,42 @@ const createPropertyIntoDB = async (
 
   return property;
 };
-const updatePropertyIntoDB = async () => {};
+
+const updatePropertyIntoDB = async (
+  propertyId: string,
+  payload: IUpdatePropertyPayload,
+) => {
+  const property = await prisma.property.findUnique({
+    where: {
+      id: propertyId,
+    },
+  });
+  if (!property) {
+    throw new Error("No such property is exist.");
+  }
+
+  const noChange = await prisma.property.findFirst({
+    where: {
+      ...payload,
+      id: propertyId,
+    },
+  });
+  if (noChange) {
+    throw new Error("Everything is updated.");
+  }
+
+  const updatedProperty = await prisma.property.update({
+    where: {
+      id: propertyId,
+    },
+    data: {
+      ...payload,
+    },
+  });
+
+  return updatedProperty;
+};
+
 const deletePropertyFromDB = async () => {};
 const getAllRentalRequestsFromDB = async () => {};
 const modifyRentalRequestIntoDB = async () => {};

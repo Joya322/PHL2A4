@@ -11,7 +11,7 @@ router.post(
   landlordControllers.createProperty,
 );
 
-router.put("/properties/:id", landlordControllers.updateProperty);
+router.put("/properties/:propertyId", landlordControllers.updateProperty);
 // ...
 router.delete("/properties/:id", landlordControllers.deleteProperty);
 router.get("/requests", landlordControllers.getAllRentalRequests);

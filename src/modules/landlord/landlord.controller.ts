@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { sendResponse } from "../../utils/sendResponse";
-import httpStatus from 'http-status';
+import httpStatus from "http-status";
 import { catchAsync } from "../../utils/catchAsync";
 import { landlordServices } from "./landlord.service";
 
@@ -28,13 +28,27 @@ const createProperty = catchAsync(
 
 const updateProperty = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
+    const { propertyId } = req.params;
+    if (!propertyId) {
+      throw new Error("Property id is required.");
+    }
+
+    const payload = req.body;
+    if (!payload) {
+      throw new Error("Nothing to update.");
+    }
+
+    const result = await landlordServices.updatePropertyIntoDB(
+      propertyId as string,
+      payload,
+    );
+
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,
-      message: "User Logged in Successfully.",
+      message: "Property updated successfully.",
       data: {
-        //accessToken,
-        //refreshToken,
+        result,
       },
     });
   },
