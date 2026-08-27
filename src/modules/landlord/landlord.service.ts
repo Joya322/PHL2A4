@@ -5,14 +5,26 @@ const createPropertyIntoDB = async (
   payload: ICreatePropertyPayload,
   landlordId: string,
 ) => {
-  // const property = await prisma.property.create({
-  //   data: {
-  //     ...payload,
-  //     landlordId,
-  //   },
-  // });
+  const { categoryId } = payload;
 
-  // return property;
+  const category = await prisma.category.findFirst({
+    where: {
+      id: categoryId,
+    },
+  });
+
+  if (!category) {
+    throw new Error("Invalid category.");
+  }
+
+  const property = await prisma.property.create({
+    data: {
+      ...payload,
+      landlordId,
+    },
+  });
+
+  return property;
 };
 const updatePropertyIntoDB = async () => {};
 const deletePropertyFromDB = async () => {};
