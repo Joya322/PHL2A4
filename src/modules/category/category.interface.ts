@@ -1,4 +1,4 @@
-export interface IAddCategoryPayload {
+export interface ICreateCategoryPayload {
   name: string;
   description?: string;
 }

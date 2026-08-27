@@ -1,10 +1,10 @@
 import { prisma } from "../../lib/prisma";
 import {
-  IAddCategoryPayload,
+  ICreateCategoryPayload,
   IUpdateCategoryPayload,
 } from "./category.interface";
 
-const addPropertyCategoryIntoDB = async (payload: IAddCategoryPayload) => {
+const createCategoryIntoDB = async (payload: ICreateCategoryPayload) => {
   const { name } = payload;
 
   const isExist = await prisma.category.findFirst({
@@ -102,7 +102,7 @@ const deletePropertyCategoryFromDB = async (categoryId: string) => {
 };
 
 export const categoryServices = {
-  addPropertyCategoryIntoDB,
+  createCategoryIntoDB,
   getAllPropertyCategoriesFromDB,
   getPropertyCategoryByIdFromDB,
   updatePropertyCategoryIntoDB,

@@ -5,12 +5,12 @@ import { UserRole } from "../../../generated/prisma/enums";
 
 const router = Router();
 
-router.post("/", auth(UserRole.LANDLORD), propertyControllers.addProperty);
+// router.post("/", auth(UserRole.LANDLORD), propertyControllers.addProperty);
 
 router.get("/", auth(UserRole.ADMIN, UserRole.LANDLORD, UserRole.TENANT), propertyControllers.getAllProperties);
 
 router.get(
-  "/:id",
+  "/:propertyId",
   auth(UserRole.ADMIN, UserRole.LANDLORD, UserRole.TENANT),
   propertyControllers.getPropertyById,
 );

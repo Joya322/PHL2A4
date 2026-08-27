@@ -1,20 +1,6 @@
 import { PropertyWhereInput } from "../../../generated/prisma/models";
 import { prisma } from "../../lib/prisma";
-import { IAddPropertyPayload, IPropertyQuery } from "./property.interface";
-
-const addPropertyIntoDB = async (
-  payload: IAddPropertyPayload,
-  landlordId: string,
-) => {
-  const property = await prisma.property.create({
-    data: {
-      ...payload,
-      landlordId,
-    },
-  });
-
-  return property;
-};
+import { IPropertyQuery } from "./property.interface";
 
 const getAllPropertiesFromDB = async (query: IPropertyQuery) => {
   const sortOrder = query.sortOrder ? query.sortOrder : "desc";
@@ -79,10 +65,8 @@ const getPropertyByIdFromDB = async (id: string) => {
   return property;
 };
 
-const getAllPropertyCategoriesFromDB = () => {};
 
 export const propertyServices = {
-  addPropertyIntoDB,
   getAllPropertiesFromDB,
   getPropertyByIdFromDB,
 };

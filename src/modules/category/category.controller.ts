@@ -4,11 +4,11 @@ import { sendResponse } from "../../utils/sendResponse";
 import httpStatus from "http-status";
 import { categoryServices } from "./category.service";
 
-const addPropertyCategory = catchAsync(
+const createCategory = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const payload = req.body;
 
-    const result = await categoryServices.addPropertyCategoryIntoDB(payload);
+    const result = await categoryServices.createCategoryIntoDB(payload);
 
     sendResponse(res, {
       success: true,
@@ -95,7 +95,7 @@ const deletePropertyCategory = catchAsync(
 );
 
 export const categoryControllers = {
-  addPropertyCategory,
+  createCategory,
   getAllPropertyCategories,
   getPropertyCategoryById,
   updatePropertyCategory,

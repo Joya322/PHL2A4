@@ -4,28 +4,6 @@ import { sendResponse } from "../../utils/sendResponse";
 import httpStatus from "http-status";
 import { propertyServices } from "./property.service";
 
-const addProperty = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const landlordId = req.user?.id;
-
-    const payload = req.body;
-
-    const result = await propertyServices.addPropertyIntoDB(
-      payload,
-      landlordId as string,
-    );
-
-    sendResponse(res, {
-      success: true,
-      statusCode: httpStatus.CREATED,
-      message: "Property added successfully.",
-      data: {
-        result,
-      },
-    });
-  },
-);
-
 const getAllProperties = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const query = req.query;
@@ -37,7 +15,7 @@ const getAllProperties = catchAsync(
       statusCode: httpStatus.OK,
       message: "All properties retrieved successfully.",
       data: {
-        result
+        result,
       },
     });
   },
@@ -45,16 +23,22 @@ const getAllProperties = catchAsync(
 
 const getPropertyById = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { id } = req.params;
+    const { propertyId } = req.params;
 
-    const result = await propertyServices.getPropertyByIdFromDB(id as string);
+    if (!propertyId) {
+      throw new Error("Property id is required.");
+    }
+
+    const result = await propertyServices.getPropertyByIdFromDB(
+      propertyId as string,
+    );
 
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,
       message: "Property retrieved successfully.",
       data: {
-        result
+        result,
       },
     });
   },
@@ -74,7 +58,7 @@ const getAllPropertyCategories = catchAsync(
 );
 
 export const propertyControllers = {
-  addProperty,
+  
   getAllProperties,
   getPropertyById,
   getAllPropertyCategories,

@@ -1,13 +1,19 @@
 import { Router } from "express";
-import { landlordController } from "./landlord.controller";
+import { landlordControllers } from "./landlord.controller";
+import { auth } from "../../middlewares/auth";
+import { UserRole } from "../../../generated/prisma/enums";
 
 const router = Router();
 
-router.post("/properties", landlordController.createNewProperty);
-router.put("/properties/:id", landlordController.updateProperty);
-router.delete("/properties/:id", landlordController.deleteProperty);
-router.get("/requests", landlordController.getAllRentalRequests);
-router.patch("/requests/:id", landlordController.modifyRentalRequest);
-
+router.post(
+  "/properties",
+  auth(UserRole.LANDLORD, UserRole.ADMIN),
+  landlordControllers.createProperty,
+);
+// ...
+router.put("/properties/:id", landlordControllers.updateProperty);
+router.delete("/properties/:id", landlordControllers.deleteProperty);
+router.get("/requests", landlordControllers.getAllRentalRequests);
+router.patch("/requests/:id", landlordControllers.modifyRentalRequest);
 
 export const landlordRoute = router;
