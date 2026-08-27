@@ -44,6 +44,8 @@ const createPropertyIntoDB = async (
 const updatePropertyIntoDB = async (
   propertyId: string,
   payload: IUpdatePropertyPayload,
+  userId: string,
+  isAdmin: boolean,
 ) => {
   const property = await prisma.property.findUnique({
     where: {
@@ -52,6 +54,10 @@ const updatePropertyIntoDB = async (
   });
   if (!property) {
     throw new Error("No such property is exist.");
+  }
+
+  if (!isAdmin && property.landlordId !== userId) {
+    throw new Error("You have no permission to delete this property.");
   }
 
   const noChange = await prisma.property.findFirst({
@@ -76,7 +82,16 @@ const updatePropertyIntoDB = async (
   return updatedProperty;
 };
 
-const deletePropertyFromDB = async () => {};
+const deletePropertyFromDB = async (propertyId: string) => {
+  const property = await prisma.property.findUnique({
+    where: {
+      id: propertyId,
+    },
+  });
+  if (!property) {
+    throw new Error("No such property is exist.");
+  }
+};
 const getAllRentalRequestsFromDB = async () => {};
 const modifyRentalRequestIntoDB = async () => {};
 

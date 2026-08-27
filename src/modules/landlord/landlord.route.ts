@@ -11,9 +11,18 @@ router.post(
   landlordControllers.createProperty,
 );
 
-router.put("/properties/:propertyId", landlordControllers.updateProperty);
+router.put(
+  "/properties/:propertyId",
+  auth(UserRole.LANDLORD, UserRole.ADMIN),
+  landlordControllers.updateProperty,
+);
+
+router.delete(
+  "/properties/:propertyId",
+  auth(UserRole.LANDLORD, UserRole.ADMIN),
+  landlordControllers.deleteProperty,
+);
 // ...
-router.delete("/properties/:id", landlordControllers.deleteProperty);
 router.get("/requests", landlordControllers.getAllRentalRequests);
 router.patch("/requests/:id", landlordControllers.modifyRentalRequest);
 
