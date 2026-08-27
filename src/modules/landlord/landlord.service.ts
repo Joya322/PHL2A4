@@ -17,6 +17,17 @@ const createPropertyIntoDB = async (
     throw new Error("Invalid category.");
   }
 
+  const existingProperty = await prisma.property.findFirst({
+    where: {
+      ...payload,
+      landlordId,
+    },
+  });
+
+  if (existingProperty) {
+    throw new Error("This property is already exist. Please try another.");
+  }
+
   const property = await prisma.property.create({
     data: {
       ...payload,

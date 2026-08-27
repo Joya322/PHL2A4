@@ -18,7 +18,7 @@ const createProperty = catchAsync(
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.CREATED,
-      message: "Property added successfully.",
+      message: "Property created successfully.",
       data: {
         result,
       },
@@ -26,7 +26,20 @@ const createProperty = catchAsync(
   },
 );
 
-const updateProperty = async (req: Request, res: Response) => {};
+const updateProperty = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "User Logged in Successfully.",
+      data: {
+        //accessToken,
+        //refreshToken,
+      },
+    });
+  },
+);
+
 const deleteProperty = async (req: Request, res: Response) => {};
 const getAllRentalRequests = async (req: Request, res: Response) => {};
 const modifyRentalRequest = async (req: Request, res: Response) => {};
