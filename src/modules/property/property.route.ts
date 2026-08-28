@@ -4,18 +4,19 @@ import { auth } from "../../middlewares/auth";
 import { UserRole } from "../../../generated/prisma/enums";
 
 const router = Router();
-
-// router.post("/", auth(UserRole.LANDLORD), propertyControllers.addProperty);
-
-router.get("/", auth(UserRole.ADMIN, UserRole.LANDLORD, UserRole.TENANT), propertyControllers.getAllProperties);
+// all api done
+router.get(
+  "/",
+  auth(UserRole.ADMIN, UserRole.LANDLORD, UserRole.TENANT),
+  propertyControllers.getAllProperties,
+);
 
 router.get(
   "/:propertyId",
   auth(UserRole.ADMIN, UserRole.LANDLORD, UserRole.TENANT),
   propertyControllers.getPropertyById,
 );
-// ...
 
-router.post("/categories", propertyControllers.getAllPropertyCategories);
+router.get("/categories", propertyControllers.getAllPropertyCategories);
 
 export const propertyRoutes = router;

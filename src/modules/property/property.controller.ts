@@ -45,13 +45,14 @@ const getPropertyById = catchAsync(
 );
 const getAllPropertyCategories = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
+    const result = await propertyServices.getAllPropertyCategoriesFromDB();
+
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,
-      message: "User Logged in Successfully.",
+      message: "All categories retrieved successfully.",
       data: {
-        //accessToken,
-        //refreshToken,
+        result,
       },
     });
   },

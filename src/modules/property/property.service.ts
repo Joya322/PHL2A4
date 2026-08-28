@@ -65,8 +65,14 @@ const getPropertyByIdFromDB = async (id: string) => {
   return property;
 };
 
+const getAllPropertyCategoriesFromDB = async () => {
+  const allCategories = await prisma.category.findMany();
+
+  return allCategories;
+};
 
 export const propertyServices = {
   getAllPropertiesFromDB,
   getPropertyByIdFromDB,
+  getAllPropertyCategoriesFromDB,
 };

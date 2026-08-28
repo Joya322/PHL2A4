@@ -21,20 +21,7 @@ const createCategory = catchAsync(
   },
 );
 
-const getAllPropertyCategories = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const result = await categoryServices.getAllPropertyCategoriesFromDB();
 
-    sendResponse(res, {
-      success: true,
-      statusCode: httpStatus.OK,
-      message: "All categories retrieved successfully.",
-      data: {
-        result,
-      },
-    });
-  },
-);
 
 const getPropertyCategoryById = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -96,7 +83,6 @@ const deletePropertyCategory = catchAsync(
 
 export const categoryControllers = {
   createCategory,
-  getAllPropertyCategories,
   getPropertyCategoryById,
   updatePropertyCategory,
   deletePropertyCategory,

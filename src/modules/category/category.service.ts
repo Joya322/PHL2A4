@@ -26,11 +26,7 @@ const createCategoryIntoDB = async (payload: ICreateCategoryPayload) => {
   return category;
 };
 
-const getAllPropertyCategoriesFromDB = async () => {
-  const allCategories = await prisma.category.findMany();
 
-  return allCategories;
-};
 
 const getPropertyCategoryByIdFromDB = async (categoryId: string) => {
   const category = await prisma.category.findUnique({
@@ -103,7 +99,6 @@ const deletePropertyCategoryFromDB = async (categoryId: string) => {
 
 export const categoryServices = {
   createCategoryIntoDB,
-  getAllPropertyCategoriesFromDB,
   getPropertyCategoryByIdFromDB,
   updatePropertyCategoryIntoDB,
   deletePropertyCategoryFromDB,
