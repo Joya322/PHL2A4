@@ -26,4 +26,4 @@ router.delete(
 router.get("/requests", landlordControllers.getAllRentalRequests);
 router.patch("/requests/:id", landlordControllers.modifyRentalRequest);
 
-export const landlordRoute = router;
+export const landlordRoutes = router;

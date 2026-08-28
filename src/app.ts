@@ -6,8 +6,8 @@ import { authRoutes } from "./modules/auth/auth.route";
 import { adminRoute } from "./modules/admin/admin.route";
 import { reviewRoute } from "./modules/review/review.route";
 import { paymentRoute } from "./modules/payment/payment.route";
-import { rentalRoute } from "./modules/rentalRequest/rentalRequest.route";
-import { landlordRoute } from "./modules/landlord/landlord.route";
+import { rentalRoutes } from "./modules/rentalRequest/rentalRequest.route";
+import { landlordRoutes } from "./modules/landlord/landlord.route";
 import { propertyRoutes } from "./modules/property/property.route";
 import { notFound } from "./middlewares/notFound";
 import { globalErrorHandler } from "./middlewares/globalErrorHandler";
@@ -37,13 +37,13 @@ app.get("/", async (req: Request, res: Response) => {
 
 app.use("/api/auth", authRoutes);
 
-app.use("/api/categories", categoryRoutes);
-
 app.use("/api/properties", propertyRoutes);
 
 // ...
-app.use("/api/landlord", landlordRoute);
-app.use("/api/rentals", rentalRoute);
+app.use("/api/landlord", landlordRoutes);
+app.use("/api/rentals", rentalRoutes);
+
+app.use("/api/categories", categoryRoutes);
 app.use("/api/payments", paymentRoute);
 app.use("/api/reviews", reviewRoute);
 app.use("/api/admin", adminRoute);
