@@ -13,7 +13,7 @@ const createProperty = catchAsync(
 
     const result = await landlordServices.createPropertyIntoDB(
       payload,
-      landlordId as string,
+      landlordId,
     );
 
     sendResponse(res, {
@@ -45,7 +45,7 @@ const updateProperty = catchAsync(
     const result = await landlordServices.updatePropertyIntoDB(
       propertyId as string,
       payload,
-      userId as string,
+      userId,
       isAdmin,
     );
 
@@ -67,17 +67,20 @@ const deleteProperty = catchAsync(
       throw new Error("Property id is required.");
     }
 
-    const result = await landlordServices.deletePropertyFromDB(
+    const userId = req.user!.id;
+    const isAdmin = req.user!.role === UserRole.ADMIN;
+
+    await landlordServices.deletePropertyFromDB(
       propertyId as string,
+      userId,
+      isAdmin,
     );
 
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,
       message: "Property deleted successfully.",
-      data: {
-        result,
-      },
+      data: null
     });
   },
 );
