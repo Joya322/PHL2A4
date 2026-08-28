@@ -8,12 +8,18 @@ const router = Router();
 
 router.post("/", auth(UserRole.ADMIN), categoryControllers.createCategory);
 
-router.get("/", categoryControllers.getAllPropertyCategories);
-
 router.get("/:categoryId", categoryControllers.getPropertyCategoryById);
 
-router.put("/:categoryId", categoryControllers.updatePropertyCategory);
+router.put(
+  "/:categoryId",
+  auth(UserRole.ADMIN),
+  categoryControllers.updatePropertyCategory,
+);
 
-router.delete("/:categoryId", categoryControllers.deletePropertyCategory);
+router.delete(
+  "/:categoryId",
+  auth(UserRole.ADMIN),
+  categoryControllers.deletePropertyCategory,
+);
 
 export const categoryRoutes = router;

@@ -11,12 +11,12 @@ router.get(
   propertyControllers.getAllProperties,
 );
 
+router.get("/categories", propertyControllers.getAllPropertyCategories);
+
 router.get(
   "/:propertyId",
   auth(UserRole.ADMIN, UserRole.LANDLORD, UserRole.TENANT),
   propertyControllers.getPropertyById,
 );
-
-router.get("/categories", propertyControllers.getAllPropertyCategories);
 
 export const propertyRoutes = router;

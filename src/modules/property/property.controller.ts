@@ -59,7 +59,6 @@ const getAllPropertyCategories = catchAsync(
 );
 
 export const propertyControllers = {
-  
   getAllProperties,
   getPropertyById,
   getAllPropertyCategories,
