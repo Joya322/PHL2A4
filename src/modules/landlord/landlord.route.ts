@@ -5,6 +5,7 @@ import { UserRole } from "../../../generated/prisma/enums";
 
 const router = Router();
 
+// all done
 router.post(
   "/properties",
   auth(UserRole.LANDLORD, UserRole.ADMIN),
@@ -23,7 +24,11 @@ router.delete(
   landlordControllers.deleteProperty,
 );
 
-router.get("/requests", auth(UserRole.LANDLORD), landlordControllers.getAllRentalRequestsForMyProperties);
+router.get(
+  "/requests",
+  auth(UserRole.LANDLORD),
+  landlordControllers.getAllRentalRequestsForMyProperties,
+);
 
 router.patch(
   "/requests/:rentalRequestId",

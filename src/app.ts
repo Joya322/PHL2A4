@@ -39,9 +39,10 @@ app.use("/api/auth", authRoutes);
 
 app.use("/api/properties", propertyRoutes);
 
-// ...
 app.use("/api/landlord", landlordRoutes);
+
 app.use("/api/rentals", rentalRoutes);
+// ...
 
 app.use("/api/categories", categoryRoutes);
 app.use("/api/payments", paymentRoute);

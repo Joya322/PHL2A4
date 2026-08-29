@@ -53,10 +53,18 @@ const createRentalRequestIntoDB = async (
   return rentalRequest;
 };
 
-const getAllRentalRequestsFromDB = async () => {};
+const getAllRentalRequestsFromDB = async (tenantId: string) => {
+  const allRentalRequests = await prisma.rentalRequest.findMany({
+    where: {
+      tenantId,
+    },
+  });
+
+  return allRentalRequests
+};
 const getRentalRequestFromDB = async () => {};
 
-export const rentalRequestService = {
+export const rentalRequestServices = {
   createRentalRequestIntoDB,
   getAllRentalRequestsFromDB,
   getRentalRequestFromDB,

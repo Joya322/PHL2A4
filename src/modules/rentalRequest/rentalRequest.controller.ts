@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
-import httpStatus  from 'http-status';
-import { rentalRequestService } from "./rentalRequest.service";
+import httpStatus from "http-status";
+import { rentalRequestServices } from "./rentalRequest.service";
 
 const createRentalRequest = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -13,7 +13,7 @@ const createRentalRequest = catchAsync(
       throw new Error("Nothing to create.");
     }
 
-    const result = await rentalRequestService.createRentalRequestIntoDB(
+    const result = await rentalRequestServices.createRentalRequestIntoDB(
       tenantId,
       payload,
     );
@@ -28,10 +28,27 @@ const createRentalRequest = catchAsync(
     });
   },
 );
-const getAllRentalRequests = async (req: Request, res: Response) => {};
+
+const getAllRentalRequests = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const tenantId = req.user!.id;
+
+    const result = await rentalRequestServices.getAllRentalRequestsFromDB(tenantId);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "All rental request retrieved successfully.",
+      data: {
+        result
+      },
+    });
+  },
+);
+
 const getRentalRequest = async (req: Request, res: Response) => {};
 
-export const rentalRequestController = {
+export const rentalRequestControllers = {
   createRentalRequest,
   getAllRentalRequests,
   getRentalRequest,
