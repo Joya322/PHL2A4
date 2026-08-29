@@ -54,13 +54,15 @@ const createRentalRequestIntoDB = async (
   return rentalRequest;
 };
 
-const getAllRentalRequestsFromDB = async (userId: string, userRole: UserRole) => {
+const getAllRentalRequestsFromDB = async (
+  userId: string,
+  userRole: UserRole,
+) => {
   let rentalRequests = {};
 
   if (userRole === UserRole.ADMIN) {
-     rentalRequests = await prisma.rentalRequest.findMany();
+    rentalRequests = await prisma.rentalRequest.findMany();
   } else if (userRole === UserRole.LANDLORD) {
-    
     rentalRequests = await prisma.rentalRequest.findMany({
       where: {
         landlordId: userId,
@@ -74,12 +76,11 @@ const getAllRentalRequestsFromDB = async (userId: string, userRole: UserRole) =>
     });
   }
 
-
   if (!rentalRequests) {
     throw new Error("No rental requests found.");
   }
 
-  return rentalRequests
+  return rentalRequests;
 };
 
 const getRentalRequestByIdFromDB = async (
@@ -87,31 +88,43 @@ const getRentalRequestByIdFromDB = async (
   userId: string,
   userRole: UserRole,
 ) => {
-  const isRentalRequestExist = await prisma.rentalRequest.findUnique({
+  let rentalRequest = await prisma.rentalRequest.findUnique({
     where: {
       id: rentalRequestId,
     },
-    include: {
-      landlord: true,
-      tenant: true,
-    },
   });
 
-  if (!isRentalRequestExist) {
+  if (!rentalRequest) {
     throw new Error("No such rental request found.");
   }
 
-  const { landlordId, tenantId } = isRentalRequestExist;
+  if (userRole === UserRole.ADMIN) {
+    rentalRequest = await prisma.rentalRequest.findUnique({
+      where: {
+        id: rentalRequestId,
+      },
+    });
+  } else if (userRole === UserRole.LANDLORD) {
+    rentalRequest = await prisma.rentalRequest.findUnique({
+      where: {
+        id: rentalRequestId,
+        landlordId: userId,
+      },
+    });
+  } else {
+    rentalRequest = await prisma.rentalRequest.findUnique({
+      where: {
+        id: rentalRequestId,
+        tenantId: userId,
+      },
+    });
+  }
 
-  if (
-    userId !== UserRole.ADMIN &&
-    userId !== landlordId &&
-    userId !== tenantId
-  ) {
+  if (!rentalRequest) {
     throw new Error("You have no permission to access this resource.");
   }
 
-  return isRentalRequestExist;
+  return rentalRequest;
 };
 
 export const rentalRequestServices = {
