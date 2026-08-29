@@ -13,10 +13,14 @@ router.post(
 
 router.get(
   "/",
-  auth(UserRole.TENANT),
+  auth(UserRole.TENANT, UserRole.ADMIN, UserRole.LANDLORD),
   rentalRequestControllers.getAllRentalRequests,
 );
-// ...
-router.get("/:id", rentalRequestControllers.getRentalRequest);
+
+router.get(
+  "/:id",
+  auth(UserRole.TENANT, UserRole.ADMIN, UserRole.LANDLORD),
+  rentalRequestControllers.getRentalRequestById,
+);
 
 export const rentalRoutes = router;

@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { ICreateRentalRequestPayload } from "./rentalRequest.interface";
 import { prisma } from "../../lib/prisma";
+import { UserRole } from "../../../generated/prisma/enums";
 
 const createRentalRequestIntoDB = async (
   tenantId: string,
@@ -53,19 +54,55 @@ const createRentalRequestIntoDB = async (
   return rentalRequest;
 };
 
-const getAllRentalRequestsFromDB = async (tenantId: string) => {
-  const allRentalRequests = await prisma.rentalRequest.findMany({
+const getAllRentalRequestsFromDB = async (userId: string, userRole: string) => {
+  if (userRole === UserRole.ADMIN) {
+    console.log(userRole);
+    return await prisma.rentalRequest.findMany();
+  } else if (userRole === UserRole.LANDLORD) {
+    console.log(userRole);
+    return await prisma.rentalRequest.findMany({
+      where: {
+        landlordId: userId,
+      },
+    });
+  } else {
+    return await prisma.rentalRequest.findMany({
+      where: {
+        tenantId: userId,
+      },
+    });
+  }
+};
+const getRentalRequestByIdFromDB = async (id: string, userId: string) => {
+  const isRentalRequestExist = await prisma.rentalRequest.findUnique({
     where: {
-      tenantId,
+      id,
+    },
+    include: {
+      landlord: true,
+      tenant: true,
     },
   });
 
-  return allRentalRequests
+  if (!isRentalRequestExist) {
+    throw new Error("No such rental request found.");
+  }
+
+  const { landlordId, tenantId } = isRentalRequestExist;
+
+  if (
+    userId !== UserRole.ADMIN &&
+    userId !== landlordId &&
+    userId !== tenantId
+  ) {
+    throw new Error("You have no permission to access this resource.");
+  }
+
+  return isRentalRequestExist;
 };
-const getRentalRequestFromDB = async () => {};
 
 export const rentalRequestServices = {
   createRentalRequestIntoDB,
   getAllRentalRequestsFromDB,
-  getRentalRequestFromDB,
+  getRentalRequestByIdFromDB,
 };
