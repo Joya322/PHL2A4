@@ -54,29 +54,42 @@ const createRentalRequestIntoDB = async (
   return rentalRequest;
 };
 
-const getAllRentalRequestsFromDB = async (userId: string, userRole: string) => {
+const getAllRentalRequestsFromDB = async (userId: string, userRole: UserRole) => {
+  let rentalRequests = {};
+
   if (userRole === UserRole.ADMIN) {
-    console.log(userRole);
-    return await prisma.rentalRequest.findMany();
+     rentalRequests = await prisma.rentalRequest.findMany();
   } else if (userRole === UserRole.LANDLORD) {
-    console.log(userRole);
-    return await prisma.rentalRequest.findMany({
+    
+    rentalRequests = await prisma.rentalRequest.findMany({
       where: {
         landlordId: userId,
       },
     });
   } else {
-    return await prisma.rentalRequest.findMany({
+    rentalRequests = await prisma.rentalRequest.findMany({
       where: {
         tenantId: userId,
       },
     });
   }
+
+
+  if (!rentalRequests) {
+    throw new Error("No rental requests found.");
+  }
+
+  return rentalRequests
 };
-const getRentalRequestByIdFromDB = async (id: string, userId: string) => {
+
+const getRentalRequestByIdFromDB = async (
+  rentalRequestId: string,
+  userId: string,
+  userRole: UserRole,
+) => {
   const isRentalRequestExist = await prisma.rentalRequest.findUnique({
     where: {
-      id,
+      id: rentalRequestId,
     },
     include: {
       landlord: true,

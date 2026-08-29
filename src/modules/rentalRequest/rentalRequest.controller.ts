@@ -53,22 +53,26 @@ const getAllRentalRequests = catchAsync(
 
 const getRentalRequestById = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { id } = req.params;
-    if (!id) {
-      throw new Error("Rental request id is required.")
+    const { rentalRequestId } = req.params;
+    if (!rentalRequestId) {
+      throw new Error("Rental request id is required.");
     }
 
     const userId = req.user!.id;
+    const userRole = req.user!.role;
 
-    const result = await rentalRequestServices.getRentalRequestByIdFromDB(id as string, userId);
+    const result = await rentalRequestServices.getRentalRequestByIdFromDB(
+      rentalRequestId as string,
+      userId,
+      userRole,
+    );
     
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,
       message: "Rental request retrieved successfully.",
       data: {
-        //accessToken,
-        //refreshToken,
+        result
       },
     });
   },

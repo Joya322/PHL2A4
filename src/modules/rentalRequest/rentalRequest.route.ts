@@ -18,7 +18,7 @@ router.get(
 );
 
 router.get(
-  "/:id",
+  "/:rentalRequestId",
   auth(UserRole.TENANT, UserRole.ADMIN, UserRole.LANDLORD),
   rentalRequestControllers.getRentalRequestById,
 );
