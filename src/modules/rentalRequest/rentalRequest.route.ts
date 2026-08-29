@@ -4,7 +4,7 @@ import { auth } from "../../middlewares/auth";
 import { UserRole } from "../../../generated/prisma/enums";
 
 const router = Router();
-
+// all done
 router.post(
   "/",
   auth(UserRole.TENANT),
