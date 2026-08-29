@@ -19,13 +19,40 @@ const getAllUsers = catchAsync(
   },
 );
 
-const modifyUserStatus = async (req: Request, res: Response) => {};
+const updateUserStatus = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { userId } = req.params;
+    if (!userId) {
+      throw new Error("User id required.");
+    }
+
+    const payload = req.body;
+    if (!payload) {
+      throw new Error("Nothing to be change.");
+    }
+
+    const result = await adminServices.updateUserStatusIntoDB(
+      payload,
+      userId as string,
+    );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "User updated successfully.",
+      data: {
+        result,
+      },
+    });
+  },
+);
+
 const getAllProperties = async (req: Request, res: Response) => {};
 const getAllRentalRequests = async (req: Request, res: Response) => {};
 
 export const adminControllers = {
   getAllUsers,
-  modifyUserStatus,
+  updateUserStatus,
   getAllProperties,
   getAllRentalRequests,
 };
