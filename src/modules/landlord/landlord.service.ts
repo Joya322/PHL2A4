@@ -82,7 +82,11 @@ const updatePropertyIntoDB = async (
   return updatedProperty;
 };
 
-const deletePropertyFromDB = async (propertyId: string, userId: string, isAdmin: boolean) => {
+const deletePropertyFromDB = async (
+  propertyId: string,
+  userId: string,
+  isAdmin: boolean,
+) => {
   const property = await prisma.property.findUnique({
     where: {
       id: propertyId,
@@ -98,18 +102,29 @@ const deletePropertyFromDB = async (propertyId: string, userId: string, isAdmin:
 
   await prisma.property.delete({
     where: {
-      id: propertyId
-    }
-  })
-  
+      id: propertyId,
+    },
+  });
 };
-const getAllRentalRequestsFromDB = async () => {};
+
+const getAllRentalRequestsForMyPropertiesFromDB = async (
+  landlordId: string,
+) => {
+  const allRentalRequests = await prisma.rentalRequest.findMany({
+    where: {
+      landlordId,
+    },
+  });
+
+  return allRentalRequests;
+};
+
 const modifyRentalRequestIntoDB = async () => {};
 
 export const landlordServices = {
   createPropertyIntoDB,
   updatePropertyIntoDB,
   deletePropertyFromDB,
-  getAllRentalRequestsFromDB,
+  getAllRentalRequestsForMyPropertiesFromDB,
   modifyRentalRequestIntoDB,
 };

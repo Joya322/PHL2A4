@@ -31,8 +31,6 @@ const createRentalRequestIntoDB = async (
     throw new Error("Sorry! This property is not available now.");
   }
 
-  // console.log(isPropertyExist.rentalRequests);
-
   const rentalRequests = isPropertyExist.rentalRequests;
 
   rentalRequests.map((request) => {
@@ -42,8 +40,6 @@ const createRentalRequestIntoDB = async (
       );
     }
   });
-
-  // if(tenantId === isPropertyExist.rentalRequ)
 
   const rentalRequest = await prisma.rentalRequest.create({
     data: {
