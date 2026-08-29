@@ -8,9 +8,16 @@ const createRentalRequestIntoDB = async (
 ) => {
   const { propertyId } = payload;
 
-  const isPropertyExist = await prisma.property.findFirst({
+  const isPropertyExist = await prisma.property.findUnique({
     where: {
       id: propertyId,
+    },
+    include: {
+      rentalRequests: {
+        select: {
+          tenantId: true,
+        },
+      },
     },
   });
 
@@ -23,6 +30,20 @@ const createRentalRequestIntoDB = async (
   if (!isAvailable) {
     throw new Error("Sorry! This property is not available now.");
   }
+
+  // console.log(isPropertyExist.rentalRequests);
+
+  const rentalRequests = isPropertyExist.rentalRequests;
+
+  rentalRequests.map((request) => {
+    if (request.tenantId === tenantId) {
+      throw new Error(
+        "You have already submitted a rental request for this property.",
+      );
+    }
+  });
+
+  // if(tenantId === isPropertyExist.rentalRequ)
 
   const rentalRequest = await prisma.rentalRequest.create({
     data: {
