@@ -87,29 +87,57 @@ const deleteProperty = catchAsync(
 
 const getAllRentalRequestsForMyProperties = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    
     const landlordId = req.user!.id;
 
     const result =
-      await landlordServices.getAllRentalRequestsForMyPropertiesFromDB(landlordId);
+      await landlordServices.getAllRentalRequestsForMyPropertiesFromDB(
+        landlordId,
+      );
 
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,
       message: "All rental requests retrieved successfully.",
       data: {
-        result
+        result,
       },
     });
   },
 );
 
-const modifyRentalRequest = async (req: Request, res: Response) => {};
+const changeRentalRequestStatus = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const landlordId = req.user!.id;
+
+    const { rentalRequestId } = req.params;
+    if (!rentalRequestId) {
+      throw new Error("Rental request id is required.");
+
+    }
+
+    const payload = req.body;
+
+    const result = await landlordServices.changeRentalRequestStatusIntoDB(
+      landlordId,
+      rentalRequestId as string,
+      payload,
+    );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Changed rental request status successfully.",
+      data: {
+        result,
+      },
+    });
+  },
+);
 
 export const landlordControllers = {
   createProperty,
   updateProperty,
   deleteProperty,
   getAllRentalRequestsForMyProperties,
-  modifyRentalRequest,
+  changeRentalRequestStatus,
 };

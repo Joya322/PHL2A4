@@ -1,5 +1,6 @@
 import { prisma } from "../../lib/prisma";
 import {
+  IChangeStatusPayload,
   ICreatePropertyPayload,
   IUpdatePropertyPayload,
 } from "./landlord.interface";
@@ -119,12 +120,41 @@ const getAllRentalRequestsForMyPropertiesFromDB = async (
   return allRentalRequests;
 };
 
-const modifyRentalRequestIntoDB = async () => {};
+const changeRentalRequestStatusIntoDB = async (
+  landlordId: string,
+  rentalRequestId: string,
+  payload: IChangeStatusPayload,
+) => {
+  const isRentalRequestExist = await prisma.rentalRequest.findUnique({
+    where: {
+      id: rentalRequestId,
+    },
+  });
+
+  if (!isRentalRequestExist) {
+    throw new Error("No such rental request found.");
+  }
+
+  if (landlordId !== isRentalRequestExist.landlordId) {
+    throw new Error("You have no permission to access this resource.");
+  }
+
+  const updatedRentalRequest = await prisma.rentalRequest.update({
+    where: {
+      id: rentalRequestId,
+    },
+    data: {
+      status: payload.status,
+    },
+  });
+
+  return updatedRentalRequest;
+};
 
 export const landlordServices = {
   createPropertyIntoDB,
   updatePropertyIntoDB,
   deletePropertyFromDB,
   getAllRentalRequestsForMyPropertiesFromDB,
-  modifyRentalRequestIntoDB,
+  changeRentalRequestStatusIntoDB,
 };
