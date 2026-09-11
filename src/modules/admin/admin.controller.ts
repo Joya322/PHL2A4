@@ -28,7 +28,7 @@ const updateUserStatus = catchAsync(
 
     const payload = req.body;
     if (!payload) {
-      throw new Error("Nothing to be change.");
+      throw new Error("Nothing to change.");
     }
 
     const result = await adminServices.updateUserStatusIntoDB(
@@ -47,8 +47,37 @@ const updateUserStatus = catchAsync(
   },
 );
 
-const getAllProperties = async (req: Request, res: Response) => {};
-const getAllRentalRequests = async (req: Request, res: Response) => {};
+const getAllProperties = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const query = req.query;
+
+    const result = await adminServices.getAllPropertiesFromDB(query);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "All properties retrieved successfully.",
+      data: {
+        result,
+      },
+    });
+  },
+);
+
+const getAllRentalRequests = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const result = await adminServices.getAllRentalRequestsFromDB();
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "All rental request retrieved successfully.",
+      data: {
+        result,
+      },
+    });
+  },
+);
 
 export const adminControllers = {
   getAllUsers,

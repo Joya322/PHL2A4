@@ -3,7 +3,7 @@ import express, { Application, Request, Response } from "express";
 import cors from "cors";
 import config from "./config";
 import { authRoutes } from "./modules/auth/auth.route";
-import { adminRoute } from "./modules/admin/admin.route";
+import { adminRoutes } from "./modules/admin/admin.route";
 import { reviewRoute } from "./modules/review/review.route";
 import { paymentRoute } from "./modules/payment/payment.route";
 import { rentalRoutes } from "./modules/rentalRequest/rentalRequest.route";
@@ -42,12 +42,15 @@ app.use("/api/properties", propertyRoutes);
 app.use("/api/landlord", landlordRoutes);
 
 app.use("/api/rentals", rentalRoutes);
-// ...
 
 app.use("/api/categories", categoryRoutes);
+
 app.use("/api/payments", paymentRoute);
+
 app.use("/api/reviews", reviewRoute);
-app.use("/api/admin", adminRoute);
+
+// done below...
+app.use("/api/admin", adminRoutes);
 
 app.use(notFound);
 

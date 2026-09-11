@@ -7,9 +7,22 @@ const router = Router();
 
 router.get("/users", auth(UserRole.ADMIN), adminControllers.getAllUsers);
 
-router.patch("/users/:userId", adminControllers.updateUserStatus);
-// ...
-router.get("/properties", adminControllers.getAllProperties);
-router.get("/rentals", adminControllers.getAllRentalRequests);
+router.patch(
+  "/users/:userId",
+  auth(UserRole.ADMIN),
+  adminControllers.updateUserStatus,
+);
 
-export const adminRoute = router;
+router.get(
+  "/properties",
+  auth(UserRole.ADMIN),
+  adminControllers.getAllProperties,
+);
+
+router.get(
+  "/rentals",
+  auth(UserRole.ADMIN),
+  adminControllers.getAllRentalRequests,
+);
+
+export const adminRoutes = router;

@@ -1,7 +1,17 @@
 model Property {
   id            String   @id @default(uuid())
+
+
   landlordId    String
+  // Many properties belong to one landlord
+  landlord User @relation(fields: [landlordId], references: [id], onDelete: Cascade)
+
+
   categoryId    String
+  // Many properties belong to one category
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+
   title         String
   description   String
   address       String
@@ -19,11 +29,6 @@ model Property {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // Many properties belong to one landlord
-  landlord User @relation(fields: [landlordId], references: [id], onDelete: Cascade)
-
-  // Many properties belong to one category
-  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
   // One property -> many reviews
   reviews Review[]

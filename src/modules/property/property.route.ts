@@ -9,7 +9,7 @@ router.get(
   "/",
   auth(UserRole.ADMIN, UserRole.LANDLORD, UserRole.TENANT),
   propertyControllers.getAllProperties,
-);
+); 
 
 router.get("/categories", propertyControllers.getAllPropertyCategories);
 

@@ -13,9 +13,9 @@ router.post(
 
 router.get(
   "/",
-  auth(UserRole.TENANT, UserRole.ADMIN, UserRole.LANDLORD),
+  auth(UserRole.ADMIN, UserRole.LANDLORD),
   rentalRequestControllers.getAllRentalRequests,
-);
+); // need modification with access
 
 router.get(
   "/:rentalRequestId",

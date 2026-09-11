@@ -1,8 +1,21 @@
 model RentalRequest {
   id            String              @id @default(uuid())
+
   propertyId    String
+  //   One property can have many rental requests
+  property Property @relation(fields: [propertyId], references: [id])
+
+
   tenantId      String
+  //   One tenant can do many rental requests
+  tenant User @relation("TenantRentalRequests", fields: [tenantId], references: [id])
+
+
   landlordId    String
+  //   One landlord can have many rental requests
+  landlord User @relation("LandlordRentalRequests", fields: [landlordId], references: [id])
+
+
   moveInDate    DateTime
   leaseDuration Int
   message       String?
@@ -10,15 +23,6 @@ model RentalRequest {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  //   One tenant can do many rental requests
-  tenant User @relation("TenantRentalRequests", fields: [tenantId], references: [id])
-
-  //   One landlord can have many rental requests
-  landlord User @relation("LandlordRentalRequests", fields: [landlordId], references: [id])
-
-  //   One property can have many rental requests
-  property Property @relation(fields: [propertyId], references: [id])
 
   //  One rental request can have one payment
   payment Payment?
